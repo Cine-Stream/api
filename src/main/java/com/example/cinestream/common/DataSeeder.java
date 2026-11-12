@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.cinestream.assinante.Assinante;
 import com.example.cinestream.assinante.AssinanteRepository;
 import com.example.cinestream.assinatura.Assinatura;
+import com.example.cinestream.assinatura.AssinaturaId;
 import com.example.cinestream.assinatura.AssinaturaRepository;
 import com.example.cinestream.classificacaomaturidade.ClassificacaoDescricao;
 import com.example.cinestream.classificacaomaturidade.ClassificacaoMaturidade;
@@ -38,9 +39,11 @@ import com.example.cinestream.perfil.PerfilId;
 import com.example.cinestream.perfil.PerfilRepository;
 import com.example.cinestream.plano.Plano;
 import com.example.cinestream.plano.PlanoRepository;
-import com.example.cinestream.plano.QualidadeResolucao;
 import com.example.cinestream.profissional.Profissional;
 import com.example.cinestream.profissional.ProfissionalRepository;
+import com.example.cinestream.qualidaderesolucao.QualidadeResolucao;
+import com.example.cinestream.qualidaderesolucao.QualidadeResolucaoDescricao;
+import com.example.cinestream.qualidaderesolucao.QualidadeResolucaoRepository;
 import com.example.cinestream.statuscobranca.StatusCobranca;
 import com.example.cinestream.statuscobranca.StatusCobrancaDescricao;
 import com.example.cinestream.statuscobranca.StatusCobrancaRepository;
@@ -50,11 +53,13 @@ import com.example.cinestream.visualizacao.VisualizacaoRepository;
 @Component
 public class DataSeeder implements CommandLineRunner {
 
-    private static final String SEED_CPF = "00000000001";
+    /** CPF no formato CHAR(14) usado pelo banco. */
+    private static final String SEED_CPF = "000.000.000-01";
 
     private final AssinanteRepository assinanteRepository;
     private final PlanoRepository planoRepository;
     private final AssinaturaRepository assinaturaRepository;
+    private final QualidadeResolucaoRepository qualidadeRepository;
     private final ClassificacaoMaturidadeRepository classificacaoRepository;
     private final PerfilRepository perfilRepository;
     private final ObraRepository obraRepository;
@@ -72,6 +77,7 @@ public class DataSeeder implements CommandLineRunner {
             AssinanteRepository assinanteRepository,
             PlanoRepository planoRepository,
             AssinaturaRepository assinaturaRepository,
+            QualidadeResolucaoRepository qualidadeRepository,
             ClassificacaoMaturidadeRepository classificacaoRepository,
             PerfilRepository perfilRepository,
             ObraRepository obraRepository,
@@ -87,6 +93,7 @@ public class DataSeeder implements CommandLineRunner {
         this.assinanteRepository = assinanteRepository;
         this.planoRepository = planoRepository;
         this.assinaturaRepository = assinaturaRepository;
+        this.qualidadeRepository = qualidadeRepository;
         this.classificacaoRepository = classificacaoRepository;
         this.perfilRepository = perfilRepository;
         this.obraRepository = obraRepository;
@@ -108,6 +115,13 @@ public class DataSeeder implements CommandLineRunner {
             return;
         }
 
+        QualidadeResolucao sd = criarQualidade(QualidadeResolucaoDescricao.SD);
+        QualidadeResolucao fullHd = criarQualidade(QualidadeResolucaoDescricao.FULL_HD);
+        QualidadeResolucao quatroK = criarQualidade(QualidadeResolucaoDescricao.QUALIDADE_4K);
+        qualidadeRepository.save(sd);
+        qualidadeRepository.save(fullHd);
+        qualidadeRepository.save(quatroK);
+
         ClassificacaoMaturidade infantil = criarClassificacao(ClassificacaoDescricao.INFANTIL);
         ClassificacaoMaturidade adolescente = criarClassificacao(ClassificacaoDescricao.ADOLESCENTE);
         ClassificacaoMaturidade adulto = criarClassificacao(ClassificacaoDescricao.ADULTO);
@@ -124,16 +138,18 @@ public class DataSeeder implements CommandLineRunner {
         statusCobrancaRepository.save(atrasada);
         statusCobrancaRepository.save(estornada);
 
-        Plano basico = criarPlano("Basico", 1, QualidadeResolucao.SD);
-        Plano familia = criarPlano("Familia", 3, QualidadeResolucao.FULL_HD);
-        Plano premium = criarPlano("Premium 4K", 5, QualidadeResolucao.QUALIDADE_4K);
+        Plano basico = criarPlano("Basico", (short) 1, sd);
+        Plano familia = criarPlano("Familia", (short) 3, fullHd);
+        Plano premium = criarPlano("Premium 4K", (short) 5, quatroK);
         planoRepository.save(basico);
         planoRepository.save(familia);
         planoRepository.save(premium);
 
         Assinante alice = criarAssinante("Alice Monteiro", SEED_CPF, "alice.monteiro@fake.com", "83991010001", true);
-        Assinante bruno = criarAssinante("Bruno Carvalho", "00000000002", "bruno.carvalho@fake.com", "83991010002", true);
-        Assinante carla = criarAssinante("Carla Nogueira", "00000000003", "carla.nogueira@fake.com", "83991010003", false);
+        Assinante bruno = criarAssinante("Bruno Carvalho", "000.000.000-02", "bruno.carvalho@fake.com", "83991010002",
+                true);
+        Assinante carla = criarAssinante("Carla Nogueira", "000.000.000-03", "carla.nogueira@fake.com", "83991010003",
+                false);
         assinanteRepository.save(alice);
         assinanteRepository.save(bruno);
         assinanteRepository.save(carla);
@@ -163,9 +179,12 @@ public class DataSeeder implements CommandLineRunner {
         generoRepository.save(drama);
         generoRepository.save(ficcao);
 
-        Obra eclipse = criarObra("Eclipse Urbano", "Um suspense futurista em uma cidade sem luz natural.", 2024, 14);
-        Obra cafe = criarObra("Cafe com Estrelas", "Uma comedia romantica sobre encontros improvaveis.", 2022, 10);
-        Obra fronteiras = criarObra("Fronteiras do Amanha", "Serie sobre exploradores tentando sobreviver em Marte.", 2025, 12);
+        Obra eclipse = criarObra("Eclipse Urbano", "Um suspense futurista em uma cidade sem luz natural.",
+                (short) 2024, (short) 14);
+        Obra cafe = criarObra("Cafe com Estrelas", "Uma comedia romantica sobre encontros improvaveis.",
+                (short) 2022, (short) 10);
+        Obra fronteiras = criarObra("Fronteiras do Amanha", "Serie sobre exploradores tentando sobreviver em Marte.",
+                (short) 2025, (short) 12);
         obraRepository.save(eclipse);
         obraRepository.save(cafe);
         obraRepository.save(fronteiras);
@@ -190,18 +209,19 @@ public class DataSeeder implements CommandLineRunner {
         obraProfissionalRepository.save(criarObraProfissional(marina, fronteiras, FuncaoProfissional.DIRETOR));
         obraProfissionalRepository.save(criarObraProfissional(helena, fronteiras, FuncaoProfissional.ATOR));
 
-        episodioRepository.save(criarEpisodio(fronteiras, 1, 1, "Sinais Vermelhos", 48));
-        episodioRepository.save(criarEpisodio(fronteiras, 1, 2, "Poeira e Silencio", 52));
-        episodioRepository.save(criarEpisodio(fronteiras, 2, 1, "A Nova Orbita", 55));
+        episodioRepository.save(criarEpisodio(fronteiras, (short) 1, (short) 1, "Sinais Vermelhos", (short) 48));
+        episodioRepository.save(criarEpisodio(fronteiras, (short) 1, (short) 2, "Poeira e Silencio", (short) 52));
+        episodioRepository.save(criarEpisodio(fronteiras, (short) 2, (short) 1, "A Nova Orbita", (short) 55));
 
         assinaturaRepository.save(criarAssinatura(alice, premium, LocalDate.now().minusMonths(6), null, "49.90"));
         assinaturaRepository.save(criarAssinatura(bruno, familia, LocalDate.now().minusMonths(3), null, "34.90"));
-        assinaturaRepository.save(criarAssinatura(carla, basico, LocalDate.now().minusMonths(8), LocalDate.now().minusMonths(1), "19.90"));
+        assinaturaRepository.save(criarAssinatura(carla, basico, LocalDate.now().minusMonths(8),
+                LocalDate.now().minusMonths(1), "19.90"));
 
         faturaRepository.save(criarFatura(alice, paga, LocalDate.now().minusDays(20), LocalDate.now().minusDays(10),
                 LocalDate.now().minusDays(9), "49.90"));
-        faturaRepository.save(criarFatura(alice, pendente, LocalDate.now().minusDays(2), LocalDate.now().plusDays(8), null,
-                "49.90"));
+        faturaRepository.save(criarFatura(alice, pendente, LocalDate.now().minusDays(2), LocalDate.now().plusDays(8),
+                null, "49.90"));
         faturaRepository.save(criarFatura(bruno, paga, LocalDate.now().minusDays(18), LocalDate.now().minusDays(8),
                 LocalDate.now().minusDays(7), "34.90"));
         faturaRepository.save(criarFatura(carla, atrasada, LocalDate.now().minusDays(35), LocalDate.now().minusDays(25),
@@ -209,10 +229,16 @@ public class DataSeeder implements CommandLineRunner {
         faturaRepository.save(criarFatura(carla, estornada, LocalDate.now().minusDays(65), LocalDate.now().minusDays(55),
                 LocalDate.now().minusDays(54), "19.90"));
 
-        visualizacaoRepository.save(criarVisualizacao(aliceAdulto, eclipse, tvAlice, 100));
-        visualizacaoRepository.save(criarVisualizacao(aliceKids, cafe, celularAlice, 72));
-        visualizacaoRepository.save(criarVisualizacao(brunoPerfil, fronteiras, notebookBruno, 45));
-        visualizacaoRepository.save(criarVisualizacao(carlaPerfil, fronteiras, null, 88));
+        visualizacaoRepository.save(criarVisualizacao(aliceAdulto, eclipse, tvAlice, "100.00"));
+        visualizacaoRepository.save(criarVisualizacao(aliceKids, cafe, celularAlice, "72.00"));
+        visualizacaoRepository.save(criarVisualizacao(brunoPerfil, fronteiras, notebookBruno, "45.00"));
+        visualizacaoRepository.save(criarVisualizacao(carlaPerfil, fronteiras, null, "88.00"));
+    }
+
+    private QualidadeResolucao criarQualidade(QualidadeResolucaoDescricao descricao) {
+        QualidadeResolucao qualidade = new QualidadeResolucao();
+        qualidade.setDescricao(descricao);
+        return qualidade;
     }
 
     private ClassificacaoMaturidade criarClassificacao(ClassificacaoDescricao descricao) {
@@ -223,15 +249,15 @@ public class DataSeeder implements CommandLineRunner {
 
     private StatusCobranca criarStatus(StatusCobrancaDescricao descricao) {
         StatusCobranca status = new StatusCobranca();
-        status.setDescricao(descricao);
+        status.setNome(descricao);
         return status;
     }
 
-    private Plano criarPlano(String nome, Integer telas, QualidadeResolucao qualidade) {
+    private Plano criarPlano(String nome, Short telas, QualidadeResolucao qualidade) {
         Plano plano = new Plano();
-        plano.setNomeDoPlano(nome);
-        plano.setQuantidadeMaximaDeTelas(telas);
-        plano.setQualidadeDeResolucao(qualidade);
+        plano.setNomeComercial(nome);
+        plano.setMaxTelas(telas);
+        plano.setQualidadeResolucao(qualidade);
         return plano;
     }
 
@@ -271,7 +297,7 @@ public class DataSeeder implements CommandLineRunner {
         return genero;
     }
 
-    private Obra criarObra(String titulo, String sinopse, Integer ano, Integer idadeMinima) {
+    private Obra criarObra(String titulo, String sinopse, Short ano, Short idadeMinima) {
         Obra obra = new Obra();
         obra.setTitulo(titulo);
         obra.setSinopse(sinopse);
@@ -304,7 +330,7 @@ public class DataSeeder implements CommandLineRunner {
         return obraProfissional;
     }
 
-    private Episodio criarEpisodio(Obra obra, Integer temporada, Integer capitulo, String titulo, Integer duracao) {
+    private Episodio criarEpisodio(Obra obra, Short temporada, Short capitulo, String titulo, Short duracao) {
         Episodio episodio = new Episodio();
         episodio.setId(new EpisodioId(obra.getId(), temporada, capitulo));
         episodio.setObra(obra);
@@ -315,9 +341,9 @@ public class DataSeeder implements CommandLineRunner {
 
     private Assinatura criarAssinatura(Assinante assinante, Plano plano, LocalDate inicio, LocalDate fim, String valor) {
         Assinatura assinatura = new Assinatura();
+        assinatura.setId(new AssinaturaId(assinante.getId(), plano.getId(), inicio));
         assinatura.setAssinante(assinante);
         assinatura.setPlano(plano);
-        assinatura.setDataInicio(inicio);
         assinatura.setDataFim(fim);
         assinatura.setValorCobrado(new BigDecimal(valor));
         return assinatura;
@@ -335,13 +361,13 @@ public class DataSeeder implements CommandLineRunner {
         return fatura;
     }
 
-    private Visualizacao criarVisualizacao(Perfil perfil, Obra obra, Dispositivo dispositivo, Integer porcentagem) {
+    private Visualizacao criarVisualizacao(Perfil perfil, Obra obra, Dispositivo dispositivo, String porcentagem) {
         Visualizacao visualizacao = new Visualizacao();
         visualizacao.setPerfil(perfil);
         visualizacao.setObra(obra);
         visualizacao.setDispositivo(dispositivo);
         visualizacao.setDataHora(LocalDateTime.now().minusDays(2));
-        visualizacao.setPorcentagemAssistida(porcentagem);
+        visualizacao.setPorcentagemAssistida(new BigDecimal(porcentagem));
         return visualizacao;
     }
 }
