@@ -31,7 +31,7 @@ public class PlanoController {
     }
 
     @GetMapping("/{id}")
-    public Plano buscar(@PathVariable Long id) {
+    public Plano buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class PlanoController {
     }
 
     @PutMapping("/{id}")
-    public Plano atualizar(@PathVariable Long id, @Valid @RequestBody Plano plano) {
+    public Plano atualizar(@PathVariable Integer id, @Valid @RequestBody Plano plano) {
         plano.setId(id);
         return service.atualizar(id, plano);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }
