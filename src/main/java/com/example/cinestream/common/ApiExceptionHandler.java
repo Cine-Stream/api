@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -45,6 +47,17 @@ public class ApiExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleIntegrity(DataIntegrityViolationException exception) {
         return buildResponse(HttpStatus.CONFLICT,
                 "Violacao de integridade: registro duplicado ou referencia inexistente.");
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, Object>> handleUploadSize(MaxUploadSizeExceededException exception) {
+        return buildResponse(HttpStatus.PAYLOAD_TOO_LARGE,
+                "Arquivo maior que o limite configurado para upload.");
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<Map<String, Object>> handleMultipart(MultipartException exception) {
+        return buildResponse(HttpStatus.BAD_REQUEST, "Requisicao multipart invalida.");
     }
 
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
