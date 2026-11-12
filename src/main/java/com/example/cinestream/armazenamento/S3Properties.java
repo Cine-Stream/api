@@ -16,10 +16,18 @@ public class S3Properties {
     private String region = "us-east-2";
     private String endpoint = "";
     private String publicBaseUrl = "";
+    private String accessKeyId = "";
+    private String secretAccessKey = "";
+    private String sessionToken = "";
     private long maxBytes = 5L * 1024 * 1024;
 
     public boolean isConfigurado() {
         return bucket != null && !bucket.isBlank();
+    }
+
+    public boolean temCredenciaisEstaticas() {
+        return accessKeyId != null && !accessKeyId.isBlank()
+                && secretAccessKey != null && !secretAccessKey.isBlank();
     }
 
     public String getBucket() {
@@ -52,6 +60,30 @@ public class S3Properties {
 
     public void setPublicBaseUrl(String publicBaseUrl) {
         this.publicBaseUrl = publicBaseUrl;
+    }
+
+    public String getAccessKeyId() {
+        return accessKeyId;
+    }
+
+    public void setAccessKeyId(String accessKeyId) {
+        this.accessKeyId = accessKeyId;
+    }
+
+    public String getSecretAccessKey() {
+        return secretAccessKey;
+    }
+
+    public void setSecretAccessKey(String secretAccessKey) {
+        this.secretAccessKey = secretAccessKey;
+    }
+
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
     }
 
     public long getMaxBytes() {

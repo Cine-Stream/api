@@ -6,7 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
@@ -16,14 +20,14 @@ import software.amazon.awssdk.services.s3.S3Configuration;
 public class S3Config {
 
     /**
-     * As credenciais seguem a cadeia padrao da AWS (variaveis AWS_ACCESS_KEY_ID /
-     * AWS_SECRET_ACCESS_KEY, perfil ~/.aws/credentials ou IAM Role).
+     * Usa as chaves do .env quando informadas; caso contrario cai na cadeia
+     * padrao da AWS (variaveis de ambiente do SO, ~/.aws/credentials ou IAM Role).
      */
     @Bean
     public S3Client s3Client(S3Properties properties) {
         S3ClientBuilder builder = S3Client.builder()
                 .region(Region.of(properties.getRegion()))
-                .credentialsProvider(DefaultCredentialsProvider.create())
+                .credentialsProvider(criarCredenciais(properties))
                 // Necessario para S3 compativel (MinIO/LocalStack) que nao devolve
                 // o checksum na resposta; nao afeta o upload para a AWS.
                 .serviceConfiguration(S3Configuration.builder()
@@ -36,5 +40,20 @@ public class S3Config {
         }
 
         return builder.build();
+    }
+
+    private AwsCredentialsProvider criarCredenciais(S3Properties properties) {
+        if (!properties.temCredenciaisEstaticas()) {
+            return DefaultCredentialsProvider.create();
+        }
+        if (StringUtils.hasText(properties.getSessionToken())) {
+            return StaticCredentialsProvider.create(AwsSessionCredentials.create(
+                    properties.getAccessKeyId(),
+                    properties.getSecretAccessKey(),
+                    properties.getSessionToken()));
+        }
+        return StaticCredentialsProvider.create(AwsBasicCredentials.create(
+                properties.getAccessKeyId(),
+                properties.getSecretAccessKey()));
     }
 }

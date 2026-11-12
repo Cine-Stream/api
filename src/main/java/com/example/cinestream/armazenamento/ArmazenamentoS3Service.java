@@ -31,7 +31,7 @@ public class ArmazenamentoS3Service {
     }
 
     public String chaveAvatar(Integer assinanteId, Integer numeroSequencial) {
-        return "perfis/%d/%d/avatar".formatted(assinanteId, numeroSequencial);
+        return "%d/%d/avatar".formatted(assinanteId, numeroSequencial);
     }
 
     public String enviar(String chave, byte[] conteudo, String contentType) {
