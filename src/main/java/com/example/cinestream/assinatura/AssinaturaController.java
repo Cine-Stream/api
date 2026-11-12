@@ -1,7 +1,9 @@
 package com.example.cinestream.assinatura;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,26 +32,35 @@ public class AssinaturaController {
         return service.listar();
     }
 
-    @GetMapping("/{id}")
-    public Assinatura buscar(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    @GetMapping("/{idAssinante}/{idPlano}/{dataInicio}")
+    public Assinatura buscar(
+            @PathVariable Integer idAssinante,
+            @PathVariable Integer idPlano,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio) {
+        return service.buscarPorId(new AssinaturaId(idAssinante, idPlano, dataInicio));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Assinatura criar(@Valid @RequestBody Assinatura assinatura) {
-        return service.criar(assinatura);
+    public Assinatura criar(@Valid @RequestBody AssinaturaRequest request) {
+        return service.criar(request);
     }
 
-    @PutMapping("/{id}")
-    public Assinatura atualizar(@PathVariable Long id, @Valid @RequestBody Assinatura assinatura) {
-        assinatura.setId(id);
-        return service.atualizar(id, assinatura);
+    @PutMapping("/{idAssinante}/{idPlano}/{dataInicio}")
+    public Assinatura atualizar(
+            @PathVariable Integer idAssinante,
+            @PathVariable Integer idPlano,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @Valid @RequestBody AssinaturaUpdateRequest request) {
+        return service.atualizar(new AssinaturaId(idAssinante, idPlano, dataInicio), request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idAssinante}/{idPlano}/{dataInicio}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
-        service.excluir(id);
+    public void excluir(
+            @PathVariable Integer idAssinante,
+            @PathVariable Integer idPlano,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio) {
+        service.excluir(new AssinaturaId(idAssinante, idPlano, dataInicio));
     }
 }
