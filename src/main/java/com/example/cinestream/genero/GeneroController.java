@@ -31,7 +31,7 @@ public class GeneroController {
     }
 
     @GetMapping("/{id}")
-    public Genero buscar(@PathVariable Long id) {
+    public Genero buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class GeneroController {
     }
 
     @PutMapping("/{id}")
-    public Genero atualizar(@PathVariable Long id, @Valid @RequestBody Genero genero) {
+    public Genero atualizar(@PathVariable Integer id, @Valid @RequestBody Genero genero) {
         genero.setId(id);
         return service.atualizar(id, genero);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

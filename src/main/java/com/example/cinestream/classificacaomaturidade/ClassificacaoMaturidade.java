@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.cinestream.perfil.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,25 +19,27 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "classificacao_maturidade")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class ClassificacaoMaturidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_classificacao")
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, length = 20)
     private ClassificacaoDescricao descricao;
 
     @JsonIgnore
     @OneToMany(mappedBy = "classificacaoMaturidade")
     private List<Perfil> perfis = new ArrayList<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

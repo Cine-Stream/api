@@ -31,7 +31,7 @@ public class DispositivoController {
     }
 
     @GetMapping("/{id}")
-    public Dispositivo buscar(@PathVariable Long id) {
+    public Dispositivo buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class DispositivoController {
     }
 
     @PutMapping("/{id}")
-    public Dispositivo atualizar(@PathVariable Long id, @Valid @RequestBody Dispositivo dispositivo) {
+    public Dispositivo atualizar(@PathVariable Integer id, @Valid @RequestBody Dispositivo dispositivo) {
         dispositivo.setId(id);
         return service.atualizar(id, dispositivo);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

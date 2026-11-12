@@ -31,8 +31,8 @@ public class EpisodioController {
     }
 
     @GetMapping("/{obraId}/{numeroTemporada}/{numeroCapitulo}")
-    public Episodio buscar(@PathVariable Long obraId, @PathVariable Integer numeroTemporada,
-            @PathVariable Integer numeroCapitulo) {
+    public Episodio buscar(@PathVariable Integer obraId, @PathVariable Short numeroTemporada,
+            @PathVariable Short numeroCapitulo) {
         return service.buscarPorId(new EpisodioId(obraId, numeroTemporada, numeroCapitulo));
     }
 
@@ -43,8 +43,8 @@ public class EpisodioController {
     }
 
     @PutMapping("/{obraId}/{numeroTemporada}/{numeroCapitulo}")
-    public Episodio atualizar(@PathVariable Long obraId, @PathVariable Integer numeroTemporada,
-            @PathVariable Integer numeroCapitulo, @Valid @RequestBody Episodio episodio) {
+    public Episodio atualizar(@PathVariable Integer obraId, @PathVariable Short numeroTemporada,
+            @PathVariable Short numeroCapitulo, @Valid @RequestBody Episodio episodio) {
         EpisodioId id = new EpisodioId(obraId, numeroTemporada, numeroCapitulo);
         episodio.setId(id);
         return service.atualizar(id, episodio);
@@ -52,8 +52,8 @@ public class EpisodioController {
 
     @DeleteMapping("/{obraId}/{numeroTemporada}/{numeroCapitulo}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long obraId, @PathVariable Integer numeroTemporada,
-            @PathVariable Integer numeroCapitulo) {
+    public void excluir(@PathVariable Integer obraId, @PathVariable Short numeroTemporada,
+            @PathVariable Short numeroCapitulo) {
         service.excluir(new EpisodioId(obraId, numeroTemporada, numeroCapitulo));
     }
 }

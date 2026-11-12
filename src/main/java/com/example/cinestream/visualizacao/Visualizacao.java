@@ -1,5 +1,6 @@
 package com.example.cinestream.visualizacao;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.cinestream.dispositivo.Dispositivo;
@@ -23,13 +24,14 @@ public class Visualizacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_visualizacao")
+    private Integer id;
 
     @Column(name = "data_hora", nullable = false)
     private LocalDateTime dataHora;
 
-    @Column(name = "porcentagem_assistida", nullable = false)
-    private Integer porcentagemAssistida;
+    @Column(name = "porcentagem_assistida", nullable = false, precision = 5, scale = 2)
+    private BigDecimal porcentagemAssistida;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
@@ -46,11 +48,11 @@ public class Visualizacao {
     @JoinColumn(name = "id_dispositivo")
     private Dispositivo dispositivo;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -62,11 +64,11 @@ public class Visualizacao {
         this.dataHora = dataHora;
     }
 
-    public Integer getPorcentagemAssistida() {
+    public BigDecimal getPorcentagemAssistida() {
         return porcentagemAssistida;
     }
 
-    public void setPorcentagemAssistida(Integer porcentagemAssistida) {
+    public void setPorcentagemAssistida(BigDecimal porcentagemAssistida) {
         this.porcentagemAssistida = porcentagemAssistida;
     }
 

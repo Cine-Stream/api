@@ -31,7 +31,7 @@ public class FaturaController {
     }
 
     @GetMapping("/{id}")
-    public Fatura buscar(@PathVariable Long id) {
+    public Fatura buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class FaturaController {
     }
 
     @PutMapping("/{id}")
-    public Fatura atualizar(@PathVariable Long id, @Valid @RequestBody Fatura fatura) {
+    public Fatura atualizar(@PathVariable Integer id, @Valid @RequestBody Fatura fatura) {
         fatura.setId(id);
         return service.atualizar(id, fatura);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

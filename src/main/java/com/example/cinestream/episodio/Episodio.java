@@ -23,11 +23,11 @@ public class Episodio {
     @JoinColumn(name = "id_obra", nullable = false)
     private Obra obra;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     private String titulo;
 
     @Column(nullable = false)
-    private Integer duracao;
+    private Short duracao;
 
     public EpisodioId getId() {
         return id;
@@ -53,11 +53,11 @@ public class Episodio {
         this.titulo = titulo;
     }
 
-    public Integer getDuracao() {
+    public Short getDuracao() {
         return duracao;
     }
 
-    public void setDuracao(Integer duracao) {
+    public void setDuracao(Short duracao) {
         this.duracao = duracao;
     }
 }

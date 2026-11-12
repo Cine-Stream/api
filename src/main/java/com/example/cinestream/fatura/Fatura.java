@@ -22,7 +22,8 @@ public class Fatura {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_fatura")
+    private Integer id;
 
     @Column(name = "data_emissao", nullable = false)
     private LocalDate dataEmissao;
@@ -44,11 +45,11 @@ public class Fatura {
     @JoinColumn(name = "id_status", nullable = false)
     private StatusCobranca statusCobranca;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

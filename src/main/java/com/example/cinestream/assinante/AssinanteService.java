@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.cinestream.common.GenericCrudService;
 
 @Service
-public class AssinanteService extends GenericCrudService<Assinante, Long> {
+public class AssinanteService extends GenericCrudService<Assinante, Integer> {
 
     private final AssinanteRepository repository;
 
@@ -34,13 +34,13 @@ public class AssinanteService extends GenericCrudService<Assinante, Long> {
 
     @Override
     @CacheEvict(value = "assinantes", allEntries = true)
-    public Assinante atualizar(Long id, Assinante assinante) {
+    public Assinante atualizar(Integer id, Assinante assinante) {
         return super.atualizar(id, assinante);
     }
 
     @Override
     @CacheEvict(value = "assinantes", allEntries = true)
-    public void excluir(Long id) {
+    public void excluir(Integer id) {
         super.excluir(id);
     }
 }

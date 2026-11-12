@@ -10,32 +10,32 @@ import jakarta.persistence.Embeddable;
 public class ObraGeneroId implements Serializable {
 
     @Column(name = "id_obra")
-    private Long obraId;
+    private Integer obraId;
 
     @Column(name = "id_genero")
-    private Long generoId;
+    private Integer generoId;
 
     public ObraGeneroId() {
     }
 
-    public ObraGeneroId(Long obraId, Long generoId) {
+    public ObraGeneroId(Integer obraId, Integer generoId) {
         this.obraId = obraId;
         this.generoId = generoId;
     }
 
-    public Long getObraId() {
+    public Integer getObraId() {
         return obraId;
     }
 
-    public void setObraId(Long obraId) {
+    public void setObraId(Integer obraId) {
         this.obraId = obraId;
     }
 
-    public Long getGeneroId() {
+    public Integer getGeneroId() {
         return generoId;
     }
 
-    public void setGeneroId(Long generoId) {
+    public void setGeneroId(Integer generoId) {
         this.generoId = generoId;
     }
 

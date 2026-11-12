@@ -7,6 +7,7 @@ import com.example.cinestream.assinante.Assinante;
 import com.example.cinestream.classificacaomaturidade.ClassificacaoMaturidade;
 import com.example.cinestream.visualizacao.Visualizacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,8 +25,9 @@ import jakarta.persistence.UniqueConstraint;
 @Table(
         name = "perfil",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_perfil_assinante_nome",
+                name = "uq_perfil_nome",
                 columnNames = {"id_assinante", "nome_exibicao"}))
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class Perfil {
 
     @EmbeddedId
@@ -36,10 +38,10 @@ public class Perfil {
     @JoinColumn(name = "id_assinante", nullable = false)
     private Assinante assinante;
 
-    @Column(name = "nome_exibicao", nullable = false)
+    @Column(name = "nome_exibicao", nullable = false, length = 100)
     private String nomeExibicao;
 
-    @Column(name = "avatar_url")
+    @Column(name = "avatar_url", length = 255)
     private String avatarUrl;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

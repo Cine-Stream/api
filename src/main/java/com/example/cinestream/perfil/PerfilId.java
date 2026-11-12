@@ -10,7 +10,7 @@ import jakarta.persistence.Embeddable;
 public class PerfilId implements Serializable {
 
     @Column(name = "id_assinante")
-    private Long assinanteId;
+    private Integer assinanteId;
 
     @Column(name = "numero_sequencial")
     private Integer numeroSequencial;
@@ -18,16 +18,16 @@ public class PerfilId implements Serializable {
     public PerfilId() {
     }
 
-    public PerfilId(Long assinanteId, Integer numeroSequencial) {
+    public PerfilId(Integer assinanteId, Integer numeroSequencial) {
         this.assinanteId = assinanteId;
         this.numeroSequencial = numeroSequencial;
     }
 
-    public Long getAssinanteId() {
+    public Integer getAssinanteId() {
         return assinanteId;
     }
 
-    public void setAssinanteId(Long assinanteId) {
+    public void setAssinanteId(Integer assinanteId) {
         this.assinanteId = assinanteId;
     }
 

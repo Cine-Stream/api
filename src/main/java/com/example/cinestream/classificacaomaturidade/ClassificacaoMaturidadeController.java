@@ -31,7 +31,7 @@ public class ClassificacaoMaturidadeController {
     }
 
     @GetMapping("/{id}")
-    public ClassificacaoMaturidade buscar(@PathVariable Long id) {
+    public ClassificacaoMaturidade buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,7 +42,7 @@ public class ClassificacaoMaturidadeController {
     }
 
     @PutMapping("/{id}")
-    public ClassificacaoMaturidade atualizar(@PathVariable Long id,
+    public ClassificacaoMaturidade atualizar(@PathVariable Integer id,
             @Valid @RequestBody ClassificacaoMaturidade classificacao) {
         classificacao.setId(id);
         return service.atualizar(id, classificacao);
@@ -50,7 +50,7 @@ public class ClassificacaoMaturidadeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

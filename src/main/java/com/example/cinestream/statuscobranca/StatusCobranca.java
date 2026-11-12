@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.cinestream.fatura.Fatura;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,34 +20,36 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "status_cobranca")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class StatusCobranca {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_status")
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
-    private StatusCobrancaDescricao descricao;
+    @Column(name = "nome", nullable = false, unique = true, length = 20)
+    private StatusCobrancaDescricao nome;
 
     @JsonIgnore
     @OneToMany(mappedBy = "statusCobranca")
     private List<Fatura> faturas = new ArrayList<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public StatusCobrancaDescricao getDescricao() {
-        return descricao;
+    public StatusCobrancaDescricao getNome() {
+        return nome;
     }
 
-    public void setDescricao(StatusCobrancaDescricao descricao) {
-        this.descricao = descricao;
+    public void setNome(StatusCobrancaDescricao nome) {
+        this.nome = nome;
     }
 
     public List<Fatura> getFaturas() {

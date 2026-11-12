@@ -8,6 +8,7 @@ import com.example.cinestream.obragenero.ObraGenero;
 import com.example.cinestream.obraprofissional.ObraProfissional;
 import com.example.cinestream.visualizacao.Visualizacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,23 +21,25 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "obra")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class Obra {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_obra")
+    private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     private String titulo;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String sinopse;
 
-    @Column(name = "ano_lancamento")
-    private Integer anoLancamento;
+    @Column(name = "ano_lancamento", nullable = false)
+    private Short anoLancamento;
 
     @Column(name = "idade_minima_recomendada", nullable = false)
-    private Integer idadeMinimaRecomendada;
+    private Short idadeMinimaRecomendada;
 
     @JsonIgnore
     @OneToMany(mappedBy = "obra", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -54,11 +57,11 @@ public class Obra {
     @OneToMany(mappedBy = "obra")
     private List<Visualizacao> visualizacoes = new ArrayList<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -78,19 +81,19 @@ public class Obra {
         this.sinopse = sinopse;
     }
 
-    public Integer getAnoLancamento() {
+    public Short getAnoLancamento() {
         return anoLancamento;
     }
 
-    public void setAnoLancamento(Integer anoLancamento) {
+    public void setAnoLancamento(Short anoLancamento) {
         this.anoLancamento = anoLancamento;
     }
 
-    public Integer getIdadeMinimaRecomendada() {
+    public Short getIdadeMinimaRecomendada() {
         return idadeMinimaRecomendada;
     }
 
-    public void setIdadeMinimaRecomendada(Integer idadeMinimaRecomendada) {
+    public void setIdadeMinimaRecomendada(Short idadeMinimaRecomendada) {
         this.idadeMinimaRecomendada = idadeMinimaRecomendada;
     }
 

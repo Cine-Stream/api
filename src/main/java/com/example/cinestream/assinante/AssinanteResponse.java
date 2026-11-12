@@ -3,7 +3,7 @@ package com.example.cinestream.assinante;
 import java.io.Serializable;
 
 public record AssinanteResponse(
-        Long id,
+        Integer id,
         String nome,
         String cpf,
         String email,

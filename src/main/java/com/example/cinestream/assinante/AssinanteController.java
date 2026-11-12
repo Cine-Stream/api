@@ -31,7 +31,7 @@ public class AssinanteController {
     }
 
     @GetMapping("/{id}")
-    public Assinante buscar(@PathVariable Long id) {
+    public Assinante buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class AssinanteController {
     }
 
     @PutMapping("/{id}")
-    public Assinante atualizar(@PathVariable Long id, @Valid @RequestBody Assinante assinante) {
+    public Assinante atualizar(@PathVariable Integer id, @Valid @RequestBody Assinante assinante) {
         assinante.setId(id);
         return service.atualizar(id, assinante);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

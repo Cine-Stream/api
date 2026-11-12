@@ -31,7 +31,7 @@ public class StatusCobrancaController {
     }
 
     @GetMapping("/{id}")
-    public StatusCobranca buscar(@PathVariable Long id) {
+    public StatusCobranca buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class StatusCobrancaController {
     }
 
     @PutMapping("/{id}")
-    public StatusCobranca atualizar(@PathVariable Long id, @Valid @RequestBody StatusCobranca statusCobranca) {
+    public StatusCobranca atualizar(@PathVariable Integer id, @Valid @RequestBody StatusCobranca statusCobranca) {
         statusCobranca.setId(id);
         return service.atualizar(id, statusCobranca);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

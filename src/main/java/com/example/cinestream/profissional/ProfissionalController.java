@@ -31,7 +31,7 @@ public class ProfissionalController {
     }
 
     @GetMapping("/{id}")
-    public Profissional buscar(@PathVariable Long id) {
+    public Profissional buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class ProfissionalController {
     }
 
     @PutMapping("/{id}")
-    public Profissional atualizar(@PathVariable Long id, @Valid @RequestBody Profissional profissional) {
+    public Profissional atualizar(@PathVariable Integer id, @Valid @RequestBody Profissional profissional) {
         profissional.setId(id);
         return service.atualizar(id, profissional);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

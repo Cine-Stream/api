@@ -31,7 +31,7 @@ public class ObraController {
     }
 
     @GetMapping("/{id}")
-    public Obra buscar(@PathVariable Long id) {
+    public Obra buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class ObraController {
     }
 
     @PutMapping("/{id}")
-    public Obra atualizar(@PathVariable Long id, @Valid @RequestBody Obra obra) {
+    public Obra atualizar(@PathVariable Integer id, @Valid @RequestBody Obra obra) {
         obra.setId(id);
         return service.atualizar(id, obra);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

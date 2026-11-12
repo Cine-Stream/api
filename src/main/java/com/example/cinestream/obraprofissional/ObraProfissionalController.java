@@ -31,7 +31,7 @@ public class ObraProfissionalController {
     }
 
     @GetMapping("/{profissionalId}/{obraId}/{funcao}")
-    public ObraProfissional buscar(@PathVariable Long profissionalId, @PathVariable Long obraId,
+    public ObraProfissional buscar(@PathVariable Integer profissionalId, @PathVariable Integer obraId,
             @PathVariable FuncaoProfissional funcao) {
         return service.buscarPorId(new ObraProfissionalId(profissionalId, obraId, funcao));
     }
@@ -43,7 +43,7 @@ public class ObraProfissionalController {
     }
 
     @PutMapping("/{profissionalId}/{obraId}/{funcao}")
-    public ObraProfissional atualizar(@PathVariable Long profissionalId, @PathVariable Long obraId,
+    public ObraProfissional atualizar(@PathVariable Integer profissionalId, @PathVariable Integer obraId,
             @PathVariable FuncaoProfissional funcao, @Valid @RequestBody ObraProfissional obraProfissional) {
         ObraProfissionalId id = new ObraProfissionalId(profissionalId, obraId, funcao);
         obraProfissional.setId(id);
@@ -52,7 +52,7 @@ public class ObraProfissionalController {
 
     @DeleteMapping("/{profissionalId}/{obraId}/{funcao}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long profissionalId, @PathVariable Long obraId,
+    public void excluir(@PathVariable Integer profissionalId, @PathVariable Integer obraId,
             @PathVariable FuncaoProfissional funcao) {
         service.excluir(new ObraProfissionalId(profissionalId, obraId, funcao));
     }

@@ -31,7 +31,7 @@ public class PerfilController {
     }
 
     @GetMapping("/{assinanteId}/{numeroSequencial}")
-    public Perfil buscar(@PathVariable Long assinanteId, @PathVariable Integer numeroSequencial) {
+    public Perfil buscar(@PathVariable Integer assinanteId, @PathVariable Integer numeroSequencial) {
         return service.buscarPorId(new PerfilId(assinanteId, numeroSequencial));
     }
 
@@ -42,7 +42,7 @@ public class PerfilController {
     }
 
     @PutMapping("/{assinanteId}/{numeroSequencial}")
-    public Perfil atualizar(@PathVariable Long assinanteId, @PathVariable Integer numeroSequencial,
+    public Perfil atualizar(@PathVariable Integer assinanteId, @PathVariable Integer numeroSequencial,
             @Valid @RequestBody Perfil perfil) {
         PerfilId id = new PerfilId(assinanteId, numeroSequencial);
         perfil.setId(id);
@@ -51,7 +51,7 @@ public class PerfilController {
 
     @DeleteMapping("/{assinanteId}/{numeroSequencial}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long assinanteId, @PathVariable Integer numeroSequencial) {
+    public void excluir(@PathVariable Integer assinanteId, @PathVariable Integer numeroSequencial) {
         service.excluir(new PerfilId(assinanteId, numeroSequencial));
     }
 }

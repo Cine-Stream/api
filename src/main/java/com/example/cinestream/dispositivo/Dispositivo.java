@@ -3,9 +3,13 @@ package com.example.cinestream.dispositivo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.example.cinestream.assinante.Assinante;
 import com.example.cinestream.visualizacao.Visualizacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,16 +24,20 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "dispositivo")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class Dispositivo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_dispositivo")
+    private Integer id;
 
-    @Column(name = "endereco_mac", nullable = false, unique = true)
+    /** No banco o MAC e CHAR(17), no formato AA:BB:CC:DD:EE:FF. */
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "endereco_mac", nullable = false, unique = true, length = 17)
     private String enderecoMac;
 
-    @Column(name = "sistema_operacional")
+    @Column(name = "sistema_operacional", nullable = false, length = 50)
     private String sistemaOperacional;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -40,20 +48,21 @@ public class Dispositivo {
     @OneToMany(mappedBy = "dispositivo")
     private List<Visualizacao> visualizacoes = new ArrayList<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public String getEnderecoMac() {
-        return enderecoMac;
+        // CHAR(17) no PostgreSQL volta preenchido com espacos a direita.
+        return enderecoMac == null ? null : enderecoMac.trim();
     }
 
     public void setEnderecoMac(String enderecoMac) {
-        this.enderecoMac = enderecoMac;
+        this.enderecoMac = enderecoMac == null ? null : enderecoMac.trim();
     }
 
     public String getSistemaOperacional() {

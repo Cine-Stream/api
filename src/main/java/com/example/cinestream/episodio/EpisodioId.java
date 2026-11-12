@@ -10,44 +10,44 @@ import jakarta.persistence.Embeddable;
 public class EpisodioId implements Serializable {
 
     @Column(name = "id_obra")
-    private Long obraId;
+    private Integer obraId;
 
     @Column(name = "numero_temporada")
-    private Integer numeroTemporada;
+    private Short numeroTemporada;
 
     @Column(name = "numero_capitulo")
-    private Integer numeroCapitulo;
+    private Short numeroCapitulo;
 
     public EpisodioId() {
     }
 
-    public EpisodioId(Long obraId, Integer numeroTemporada, Integer numeroCapitulo) {
+    public EpisodioId(Integer obraId, Short numeroTemporada, Short numeroCapitulo) {
         this.obraId = obraId;
         this.numeroTemporada = numeroTemporada;
         this.numeroCapitulo = numeroCapitulo;
     }
 
-    public Long getObraId() {
+    public Integer getObraId() {
         return obraId;
     }
 
-    public void setObraId(Long obraId) {
+    public void setObraId(Integer obraId) {
         this.obraId = obraId;
     }
 
-    public Integer getNumeroTemporada() {
+    public Short getNumeroTemporada() {
         return numeroTemporada;
     }
 
-    public void setNumeroTemporada(Integer numeroTemporada) {
+    public void setNumeroTemporada(Short numeroTemporada) {
         this.numeroTemporada = numeroTemporada;
     }
 
-    public Integer getNumeroCapitulo() {
+    public Short getNumeroCapitulo() {
         return numeroCapitulo;
     }
 
-    public void setNumeroCapitulo(Integer numeroCapitulo) {
+    public void setNumeroCapitulo(Short numeroCapitulo) {
         this.numeroCapitulo = numeroCapitulo;
     }
 

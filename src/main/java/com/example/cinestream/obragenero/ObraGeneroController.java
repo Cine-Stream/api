@@ -31,7 +31,7 @@ public class ObraGeneroController {
     }
 
     @GetMapping("/{obraId}/{generoId}")
-    public ObraGenero buscar(@PathVariable Long obraId, @PathVariable Long generoId) {
+    public ObraGenero buscar(@PathVariable Integer obraId, @PathVariable Integer generoId) {
         return service.buscarPorId(new ObraGeneroId(obraId, generoId));
     }
 
@@ -42,7 +42,7 @@ public class ObraGeneroController {
     }
 
     @PutMapping("/{obraId}/{generoId}")
-    public ObraGenero atualizar(@PathVariable Long obraId, @PathVariable Long generoId,
+    public ObraGenero atualizar(@PathVariable Integer obraId, @PathVariable Integer generoId,
             @Valid @RequestBody ObraGenero obraGenero) {
         ObraGeneroId id = new ObraGeneroId(obraId, generoId);
         obraGenero.setId(id);
@@ -51,7 +51,7 @@ public class ObraGeneroController {
 
     @DeleteMapping("/{obraId}/{generoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long obraId, @PathVariable Long generoId) {
+    public void excluir(@PathVariable Integer obraId, @PathVariable Integer generoId) {
         service.excluir(new ObraGeneroId(obraId, generoId));
     }
 }

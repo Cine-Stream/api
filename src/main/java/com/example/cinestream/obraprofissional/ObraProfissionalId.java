@@ -12,10 +12,10 @@ import jakarta.persistence.Enumerated;
 public class ObraProfissionalId implements Serializable {
 
     @Column(name = "id_profissional")
-    private Long profissionalId;
+    private Integer profissionalId;
 
     @Column(name = "id_obra")
-    private Long obraId;
+    private Integer obraId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "funcao")
@@ -24,25 +24,25 @@ public class ObraProfissionalId implements Serializable {
     public ObraProfissionalId() {
     }
 
-    public ObraProfissionalId(Long profissionalId, Long obraId, FuncaoProfissional funcao) {
+    public ObraProfissionalId(Integer profissionalId, Integer obraId, FuncaoProfissional funcao) {
         this.profissionalId = profissionalId;
         this.obraId = obraId;
         this.funcao = funcao;
     }
 
-    public Long getProfissionalId() {
+    public Integer getProfissionalId() {
         return profissionalId;
     }
 
-    public void setProfissionalId(Long profissionalId) {
+    public void setProfissionalId(Integer profissionalId) {
         this.profissionalId = profissionalId;
     }
 
-    public Long getObraId() {
+    public Integer getObraId() {
         return obraId;
     }
 
-    public void setObraId(Long obraId) {
+    public void setObraId(Integer obraId) {
         this.obraId = obraId;
     }
 

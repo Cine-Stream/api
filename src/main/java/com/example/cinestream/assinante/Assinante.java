@@ -3,11 +3,15 @@ package com.example.cinestream.assinante;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.example.cinestream.assinatura.Assinatura;
 import com.example.cinestream.dispositivo.Dispositivo;
 import com.example.cinestream.fatura.Fatura;
 import com.example.cinestream.perfil.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,26 +21,45 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "assinante")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class Assinante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_assinante")
+    private Integer id;
 
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 150)
+    @Column(name = "nome_completo", nullable = false, length = 150)
     private String nome;
 
+    /** No banco o CPF e CHAR(14), no formato 000.000.000-00. */
+    @NotBlank
+    @Size(min = 14, max = 14)
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(nullable = false, unique = true, length = 14)
     private String cpf;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank
+    @Email
+    @Size(max = 150)
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
+    @NotBlank
+    @Size(max = 20)
+    @Column(nullable = false, length = 20)
     private String telefone;
 
+    @NotNull
     @Column(name = "conta_ativa", nullable = false)
     private Boolean contaAtiva = true;
 
@@ -56,11 +79,11 @@ public class Assinante {
     @OneToMany(mappedBy = "assinante", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fatura> faturas = new ArrayList<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -73,11 +96,12 @@ public class Assinante {
     }
 
     public String getCpf() {
-        return cpf;
+        // CHAR(14) no PostgreSQL volta preenchido com espacos a direita.
+        return cpf == null ? null : cpf.trim();
     }
 
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        this.cpf = cpf == null ? null : cpf.trim();
     }
 
     public String getEmail() {

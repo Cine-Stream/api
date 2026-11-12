@@ -31,7 +31,7 @@ public class VisualizacaoController {
     }
 
     @GetMapping("/{id}")
-    public Visualizacao buscar(@PathVariable Long id) {
+    public Visualizacao buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
@@ -42,14 +42,14 @@ public class VisualizacaoController {
     }
 
     @PutMapping("/{id}")
-    public Visualizacao atualizar(@PathVariable Long id, @Valid @RequestBody Visualizacao visualizacao) {
+    public Visualizacao atualizar(@PathVariable Integer id, @Valid @RequestBody Visualizacao visualizacao) {
         visualizacao.setId(id);
         return service.atualizar(id, visualizacao);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable Integer id) {
         service.excluir(id);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.cinestream.obraprofissional.ObraProfissional;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,30 +18,32 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "profissional")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class Profissional {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_profissional")
+    private Integer id;
 
-    @Column(name = "nome_artistico", nullable = false)
+    @Column(name = "nome_artistico", nullable = false, length = 100)
     private String nomeArtistico;
 
-    @Column(name = "data_nascimento")
+    @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(name = "pais_origem")
+    @Column(name = "pais_origem", nullable = false, length = 100)
     private String paisOrigem;
 
     @JsonIgnore
     @OneToMany(mappedBy = "profissional")
     private List<ObraProfissional> obras = new ArrayList<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
