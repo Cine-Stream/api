@@ -26,8 +26,8 @@ public class ObraController {
     }
 
     @GetMapping
-    public List<Obra> listar() {
-        return service.listar();
+    public List<ObraResponse> listar() {
+        return service.listarComCache();
     }
 
     @GetMapping("/{id}")

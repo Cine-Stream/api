@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import com.example.cinestream.assinante.Assinante;
 import com.example.cinestream.statuscobranca.StatusCobranca;
 
+import jakarta.persistence.Version;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,6 +45,9 @@ public class Fatura {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_status", nullable = false)
     private StatusCobranca statusCobranca;
+
+    @Version
+    private Integer versao;
 
     public Integer getId() {
         return id;
@@ -99,5 +103,13 @@ public class Fatura {
 
     public void setStatusCobranca(StatusCobranca statusCobranca) {
         this.statusCobranca = statusCobranca;
+    }
+
+    public Integer getVersao() {
+        return versao;
+    }
+
+    public void setVersao(Integer versao) {
+        this.versao = versao;
     }
 }

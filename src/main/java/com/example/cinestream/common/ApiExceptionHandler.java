@@ -4,8 +4,9 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -58,6 +59,15 @@ public class ApiExceptionHandler {
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<Map<String, Object>> handleMultipart(MultipartException exception) {
         return buildResponse(HttpStatus.BAD_REQUEST, "Requisicao multipart invalida.");
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ResponseEntity<?> handleOptimisticLocking(
+            OptimisticLockingFailureException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body("A fatura foi modificada por outro usuário. Atualize os dados e tente novamente.");
     }
 
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {

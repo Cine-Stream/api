@@ -91,6 +91,7 @@ CREATE TABLE fatura (
     valor_total NUMERIC(10,2) NOT NULL,
     id_assinante INT NOT NULL,
     id_status INT NOT NULL,
+    versao INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT fk_fatura_assinante
         FOREIGN KEY (id_assinante)
